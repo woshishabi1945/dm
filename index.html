@@ -109,7 +109,14 @@ font-size: 200px;
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-            } else { 
+
+                // 自动切换到横屏
+                if (window.screen.orientation && window.screen.orientation.lock) {
+                    window.screen.orientation.lock('landscape').catch(function(error) {
+                        console.log("无法切换到横屏: ", error);
+                    });
+                }
+            } else {
                 // 如果已经是全屏，退出全屏
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
@@ -119,6 +126,11 @@ font-size: 200px;
                     document.webkitExitFullscreen();
                 } else if (document.msExitFullscreen) { // IE/Edge
                     document.msExitFullscreen();
+                }
+
+                // 恢复默认屏幕方向
+                if (window.screen.orientation && window.screen.orientation.unlock) {
+                    window.screen.orientation.unlock();
                 }
             }
         }
